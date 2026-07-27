@@ -259,7 +259,14 @@ function pageShell({ slug, title, metaTitle, metaDesc, h1, intro, regionDefault,
 <meta property="og:description" content="${metaDesc}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png">
 <meta property="og:locale" content="en_GB">
+<meta property="og:image" content="${SITE_URL}/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="${SITE_URL}/og-image.svg">
+<meta name="google-site-verification" content="m4ovmDFcrhAbFLC1Ix28d793SYzD--JWQ2n8UtetMSg" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -501,7 +508,14 @@ function renderRefundPage() {
 <meta property="og:description" content="${REFUND_PAGE.metaDesc}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png">
 <meta property="og:locale" content="en_GB">
+<meta property="og:image" content="${SITE_URL}/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="${SITE_URL}/og-image.svg">
+<meta name="google-site-verification" content="m4ovmDFcrhAbFLC1Ix28d793SYzD--JWQ2n8UtetMSg" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
