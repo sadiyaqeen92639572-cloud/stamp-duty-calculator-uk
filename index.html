@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stamp Duty Calculator 2026 — SDLT, LBTT &amp; LTT (England, Scotland, Wales)</title>
+<meta name="description" content="Free UK stamp duty calculator. Enter property price, region and buyer type — instant SDLT (England/NI), LBTT (Scotland) or LTT (Wales) figure, including second home and first-time buyer rates.">
+<meta name="keywords" content="stamp duty calculator, stamp duty land tax calculator, stamp duty calculator england, stamp duty calculator scotland, stamp duty calculator wales, sdlt calculator, lbtt calculator, ltt calculator">
+<link rel="canonical" href="https://checkstampduty.co.uk/">
+<meta property="og:title" content="Stamp Duty Calculator 2026 — SDLT, LBTT &amp; LTT">
+<meta property="og:description" content="Enter property price, region and buyer type → instant stamp duty figure for England, Scotland or Wales. Free, instant, no signup.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://checkstampduty.co.uk/">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Stamp Duty Calculator 2026",
+      "url": "https://checkstampduty.co.uk/",
+      "description": "Free UK stamp duty calculator covering SDLT (England/NI), LBTT (Scotland) and LTT (Wales). Enter property price, region and buyer type for an instant tax figure.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "en-GB",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+      "areaServed": { "@type": "Country", "name": "United Kingdom" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "How much is stamp duty in the UK in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "In England and Northern Ireland, SDLT is 0% up to £125,000, 2% up to £250,000, 5% up to £925,000, 10% up to £1.5m, and 12% above that. First-time buyers pay 0% up to £300,000. Second homes and buy-to-lets pay an extra 5 percentage points on every band. Scotland (LBTT) and Wales (LTT) use different bands — use the calculator above and select your region." } },
+        { "@type": "Question", "name": "Do I pay more stamp duty on a second home?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. In England/NI, a second home or buy-to-let purchase attracts a 5 percentage point surcharge on every band (so 5%/7%/10%/15%/17% instead of the standard rates), applying to any additional residential property costing £40,000 or more. Scotland charges a flat 8% Additional Dwelling Supplement (ADS) on top of standard LBTT. Wales uses separate higher rates starting from 5% with no nil-rate band." } },
+        { "@type": "Question", "name": "Can I get a stamp duty refund?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, in specific situations: if you sell your previous main home within 36 months of paying the second-home surcharge, if Multiple Dwellings Relief was missed on a qualifying purchase, or if a surcharge was incorrectly applied. Use our stamp duty refund calculator to check your situation." } },
+        { "@type": "Question", "name": "How much is stamp duty for first-time buyers?", "acceptedAnswer": { "@type": "Answer", "text": "In England and Northern Ireland, first-time buyers pay 0% up to £300,000 and 5% on the portion between £300,001 and £500,000. There is no relief if the property costs more than £500,000 — standard rates then apply to the whole price. Wales abolished first-time buyer relief; Scotland raises the LBTT nil-rate band to £175,000 for first-time buyers." } }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to calculate UK stamp duty",
+      "description": "Estimate SDLT, LBTT or LTT in 3 steps",
+      "totalTime": "PT1M",
+      "tool": [{ "@type": "HowToTool", "name": "Stamp Duty Calculator" }],
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "Select your region", "text": "Choose England/Northern Ireland (SDLT), Scotland (LBTT) or Wales (LTT) — each nation sets its own rates and bands." },
+        { "@type": "HowToStep", "position": 2, "name": "Enter the property price and buyer type", "text": "Enter the purchase price and select whether this is your only/main home, a first-time buy, or an additional property (second home/buy-to-let)." },
+        { "@type": "HowToStep", "position": 3, "name": "View your stamp duty figure", "text": "The calculator applies the current band structure and any surcharge deterministically and shows the exact amount owed, plus an effective rate." }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": "Stamp Duty Calculator",
+      "legalName": "Gesmine-Invest Limited",
+      "identifier": { "@type": "PropertyValue", "propertyID": "UK Company Number", "value": "14120136" },
+      "address": { "@type": "PostalAddress", "streetAddress": "Hardy House, 269 Poynders Gardens", "addressLocality": "London", "postalCode": "SW4 8PQ", "addressCountry": "GB" }
+    }
+  ]
+}
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --brand: #0f6e4f;
+    --brand-dark: #0a4d38;
+    --brand-light: #e6f5ee;
+    --accent: #e63946;
+    --gold: #b8860b;
+    --text: #1a1a2e;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --bg: #f8fafc;
+    --radius: 12px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); font-size: 16px; line-height: 1.65; }
+
+  header { background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 100%); color: white; padding: 52px 20px 88px; text-align: center; }
+  header .badge { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; font-weight: 600; letter-spacing: .4px; margin-bottom: 16px; }
+  header h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 12px; }
+  header p { color: rgba(255,255,255,.9); font-size: 1rem; max-width: 620px; margin: 0 auto; }
+
+  .container { max-width: 840px; margin: 0 auto; padding: 0 20px; }
+
+  .tool-wrapper { margin: -56px auto 56px; }
+
+  .tool-card { background: white; border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,0.12); border: 1px solid var(--border); padding: 36px 32px; }
+  @media (max-width: 580px) { .tool-card { padding: 22px 16px; } }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 580px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 0.79rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  label .hint { font-weight: 400; text-transform: none; font-size: 0.75rem; color: #94a3b8; }
+  select, input[type=number] {
+    border: 2px solid var(--border); border-radius: 8px; padding: 12px 14px;
+    font-size: 1rem; color: var(--text); background: white; width: 100%;
+    transition: border-color .2s;
+  }
+  select:focus, input[type=number]:focus { outline: none; border-color: var(--brand); }
+  input[type=number] { -moz-appearance: textfield; }
+  input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  .seg-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .seg-row button { flex: 1; min-width: 90px; padding: 10px 12px; border: 2px solid var(--border); background: white; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .15s; }
+  .seg-row button.active { border-color: var(--brand); background: var(--brand-light); color: var(--brand-dark); }
+
+  .calc-btn { width: 100%; margin-top: 24px; padding: 17px; background: var(--brand); color: white; border: none; border-radius: 10px; font-size: 1.08rem; font-weight: 700; cursor: pointer; transition: background .2s; letter-spacing: .2px; }
+  .calc-btn:hover { background: var(--brand-dark); }
+
+  .result { display: none; margin-top: 28px; }
+  .result-hero { background: linear-gradient(135deg, var(--brand-dark), var(--brand)); border-radius: 10px; padding: 28px; color: white; text-align: center; margin-bottom: 16px; }
+  .result-hero .rl { font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; opacity: .8; margin-bottom: 4px; }
+  .result-hero .ra { font-size: 2.6rem; font-weight: 900; line-height: 1.1; }
+  .result-hero .rs { font-size: 0.9rem; opacity: .85; margin-top: 6px; }
+
+  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  @media (max-width: 480px) { .result-grid { grid-template-columns: 1fr 1fr; } }
+  .r-stat { background: var(--brand-light); border-radius: 8px; padding: 14px; text-align: center; }
+  .r-stat .sv { font-size: 1.25rem; font-weight: 800; color: var(--brand); }
+  .r-stat .sl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+  .band-breakdown { background: #f1f5f9; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; font-size: 0.83rem; }
+  .band-breakdown .bb-row { display: flex; justify-content: space-between; padding: 4px 0; color: #475569; }
+  .band-breakdown .bb-row.total { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px; font-weight: 700; color: var(--text); }
+
+  .fca-notice { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px; font-size: 0.78rem; color: #78350f; }
+
+  .refund-nudge { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 0.85rem; color: #7c2d12; display: none; }
+  .refund-nudge a { color: var(--accent); font-weight: 700; }
+
+  .content { padding-bottom: 64px; }
+  h2.st { font-size: 1.3rem; font-weight: 800; margin: 52px 0 18px; }
+  h3.sub { font-size: 1rem; font-weight: 700; margin: 26px 0 10px; }
+  p { color: #374151; margin-bottom: 14px; line-height: 1.75; }
+
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .data-table th { background: var(--brand); color: white; padding: 10px 14px; text-align: left; font-weight: 600; white-space: nowrap; }
+  .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .data-table tr:nth-child(even) td { background: #f8faff; }
+  .highlight { font-weight: 700; color: var(--brand); }
+
+  .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 52px 0; }
+  @media (max-width: 580px) { .cta-grid { grid-template-columns: 1fr; } }
+
+  .cta-card { background: #0a4d38; color: white; border-radius: var(--radius); padding: 28px 24px; }
+  .cta-card h3 { color: white; font-size: 1.05rem; margin-bottom: 10px; }
+  .cta-card p { color: rgba(255,255,255,.85); font-size: 0.88rem; margin-bottom: 16px; }
+  .cta-card li { color: rgba(255,255,255,.85) !important; font-size: 0.85rem; margin-bottom: 6px; }
+  .cta-card ul { padding-left: 18px; margin-bottom: 16px; }
+  .cta-btn-white { display: block; background: white; color: var(--brand-dark); text-align: center; text-decoration: none; padding: 12px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; transition: opacity .15s; }
+  .cta-btn-white:hover { opacity: .9; }
+  .cta-btn-gold { display: block; background: #f59e0b; color: #1a1a2e; text-align: center; text-decoration: none; padding: 12px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; transition: opacity .15s; }
+  .cta-btn-gold:hover { opacity: .9; }
+
+  .sat-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:20px 0 40px; }
+  .sat-link { display:block;background:white;border:1px solid var(--border);border-radius:10px;padding:18px 16px;text-decoration:none;color:var(--text);transition:box-shadow .15s; }
+  .sat-link .si { font-size:1.25rem;margin-bottom:6px; }
+  .sat-link .st2 { font-weight:700;font-size:.9rem;margin-bottom:4px; }
+  .sat-link .sd { font-size:.78rem;color:var(--muted);line-height:1.5; }
+  .sat-link.money { border-left: 3px solid var(--accent); }
+
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q { width: 100%; background: none; border: none; text-align: left; padding: 18px 0; font-size: 0.92rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+  .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--brand); flex-shrink: 0; margin-left: 12px; }
+  .faq-q.open::after { content: '−'; }
+  .faq-a { display: none; padding: 0 0 16px; font-size: 0.88rem; color: #4b5563; line-height: 1.75; }
+  .faq-a.open { display: block; }
+
+  footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 32px 20px; font-size: 0.8rem; }
+  footer p { color: #94a3b8; }
+  footer a { color: #cbd5e1; }
+  .fca-footer { background: #1e293b; border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.78rem; color: #94a3b8; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="badge">🇬🇧 England · Scotland · Wales · 2026 Rates</div>
+    <h1>Stamp Duty Calculator 2026</h1>
+    <p>Enter your property price, region and buyer type — get your exact SDLT, LBTT or LTT figure instantly, including second-home and first-time-buyer rates.</p>
+  </div>
+</header>
+
+<div class="container">
+<div class="tool-wrapper">
+  <div class="tool-card">
+
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Region</label>
+        <div class="seg-row" id="regionSeg">
+          <button class="active" data-region="england">England / NI (SDLT)</button>
+          <button data-region="scotland">Scotland (LBTT)</button>
+          <button data-region="wales">Wales (LTT)</button>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label>Property Price (£)</label>
+        <input type="number" id="price" min="0" step="1000" value="350000" placeholder="e.g. 350000">
+      </div>
+      <div class="form-group full">
+        <label>Buyer Type</label>
+        <div class="seg-row" id="buyerSeg">
+          <button class="active" data-buyer="main">Only / main home</button>
+          <button data-buyer="ftb">First-time buyer</button>
+          <button data-buyer="additional">Second home / buy-to-let</button>
+        </div>
+      </div>
+      <div class="form-group full" id="nonResWrap">
+        <label>Non-UK resident? <span class="hint">— adds England/NI surcharge only</span></label>
+        <div class="seg-row">
+          <button class="active" id="nonResNo" onclick="setNonRes(false)">No</button>
+          <button id="nonResYes" onclick="setNonRes(true)">Yes</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculate()">Calculate Stamp Duty →</button>
+
+    <div class="result" id="result">
+      <div class="result-hero">
+        <div class="rl">Stamp Duty Owed</div>
+        <div class="ra" id="r-total"></div>
+        <div class="rs" id="r-sub"></div>
+      </div>
+
+      <div class="result-grid">
+        <div class="r-stat"><div class="sv" id="r-effective"></div><div class="sl">Effective rate</div></div>
+        <div class="r-stat"><div class="sv" id="r-netprice"></div><div class="sl">Property price</div></div>
+        <div class="r-stat"><div class="sv" id="r-net"></div><div class="sl">Price + tax</div></div>
+      </div>
+
+      <div class="band-breakdown" id="bandBreakdown"></div>
+
+      <div class="refund-nudge" id="refundNudge">
+        ⚠️ <strong>Overpayment risk:</strong> <span id="refundReason"></span> — <a href="/refund-calculator/">check refund eligibility →</a>
+      </div>
+
+      <div class="fca-notice">ℹ️ <strong>Disclaimer:</strong> This tool provides information only and does not constitute tax or legal advice. For a binding figure, consult a solicitor/conveyancer or use the official <a href="https://www.tax.service.gov.uk/calculate-stamp-duty-land-tax/#/intro" target="_blank" rel="noopener">HMRC SDLT calculator</a>.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="content">
+
+  <h2 class="st">Stamp Duty Rates 2026 — England &amp; Northern Ireland (SDLT)</h2>
+  <p>Standard SDLT rates apply to your only or main residence. First-time buyers get relief up to £500,000. Second homes and buy-to-lets pay a <strong>5 percentage point surcharge</strong> on every band.</p>
+
+  <div class="table-wrap">
+  <table class="data-table">
+    <thead><tr><th>Band</th><th>Standard rate</th><th>First-time buyer</th><th>Second home / BTL</th></tr></thead>
+    <tbody>
+      <tr><td>Up to £125,000</td><td>0%</td><td>0% (up to £300k)</td><td class="highlight">5%</td></tr>
+      <tr><td>£125,001 – £250,000</td><td>2%</td><td>0% (up to £300k)</td><td class="highlight">7%</td></tr>
+      <tr><td>£250,001 – £300,000</td><td>5%</td><td>0%</td><td class="highlight">10%</td></tr>
+      <tr><td>£300,001 – £500,000</td><td>5%</td><td>5%</td><td class="highlight">10%</td></tr>
+      <tr><td>£500,001 – £925,000</td><td>5%</td><td>5% (no relief)*</td><td class="highlight">10%</td></tr>
+      <tr><td>£925,001 – £1.5m</td><td>10%</td><td>10%*</td><td class="highlight">15%</td></tr>
+      <tr><td>Above £1.5m</td><td>12%</td><td>12%*</td><td class="highlight">17%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:.82rem;color:var(--muted);">*First-time buyer relief does not apply at all above £500,000 — standard rates apply to the whole price. Non-UK residents pay an additional 2% surcharge on top of any of the above.</p>
+
+  <h2 class="st">Stamp Duty Rates — Scotland (LBTT) &amp; Wales (LTT)</h2>
+  <p>Scotland and Wales set their own residential property tax bands, separate from SDLT.</p>
+
+  <div class="table-wrap">
+  <table class="data-table">
+    <thead><tr><th>Scotland (LBTT)</th><th>Rate</th><th>Wales (LTT)</th><th>Rate</th></tr></thead>
+    <tbody>
+      <tr><td>Up to £145,000</td><td>0%</td><td>Up to £225,000</td><td>0%</td></tr>
+      <tr><td>£145,001 – £250,000</td><td>2%</td><td>£225,001 – £400,000</td><td>6%</td></tr>
+      <tr><td>£250,001 – £325,000</td><td>5%</td><td>£400,001 – £750,000</td><td>7.5%</td></tr>
+      <tr><td>£325,001 – £750,000</td><td>10%</td><td>£750,001 – £1.5m</td><td>10%</td></tr>
+      <tr><td>Above £750,000</td><td>12%</td><td>Above £1.5m</td><td>12%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:.82rem;color:var(--muted);">Scotland's Additional Dwelling Supplement (ADS) adds a flat <strong>8%</strong> of the whole price for second homes/buy-to-lets. Wales has no first-time buyer relief and its higher rate for additional properties starts at 5% with no nil-rate band.</p>
+
+  <!-- SATELLITES -->
+  <h2 class="st">More Stamp Duty Calculators</h2>
+  <p>Specific scenarios and regions:</p>
+  <div class="sat-grid" id="sat-grid"></div>
+
+  <!-- CTA -->
+  <div class="cta-grid">
+    <div class="cta-card">
+      <h3>🏠 Compare Mortgage Rates</h3>
+      <p>Get the property price right before you commit — compare live mortgage rates for this purchase.</p>
+      <ul>
+        <li>Whole-of-market comparison</li>
+        <li>Free, no-obligation quote</li>
+        <li>FCA regulated brokers</li>
+      </ul>
+      <a href="https://www.habito.com/" class="cta-btn-white" target="_blank" rel="noopener sponsored">Compare Mortgages →</a>
+    </div>
+    <div class="cta-card">
+      <h3>📋 Compare Conveyancing Quotes</h3>
+      <p>Get fixed-fee conveyancing quotes from regulated solicitors for your purchase.</p>
+      <ul>
+        <li>Compare multiple quotes in minutes</li>
+        <li>No completion, no fee</li>
+        <li>Regulated solicitors only</li>
+      </ul>
+      <a href="https://www.comparemymove.com/conveyancing" class="cta-btn-gold" target="_blank" rel="noopener sponsored">Compare Conveyancers →</a>
+    </div>
+  </div>
+
+  <h2 class="st">How This Calculator Works — Formulas &amp; Method</h2>
+  <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:28px 28px 20px;margin:0 0 40px;font-size:0.9rem;line-height:1.8;">
+    <p style="margin-bottom:16px;color:#64748b;font-size:0.82rem;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Source: HMRC (SDLT), Revenue Scotland (LBTT), Welsh Revenue Authority (LTT) — 2026 rates. All formulas are deterministic given the inputs below.</p>
+
+    <h3 style="font-size:1rem;margin:0 0 12px;">Marginal band calculation (all three taxes)</h3>
+    <div style="background:#12321f;color:#e2e8f0;border-radius:8px;padding:18px 20px;font-family:'Courier New',monospace;font-size:0.83rem;line-height:2;margin-bottom:20px;overflow-x:auto;">
+      <span style="color:#7dd3fc;">tax</span> = Σ over bands: (min(price, band_upper) − band_lower) × band_rate<br>
+      <span style="color:#86efac;">— England/NI second-home surcharge —</span><br>
+      <span style="color:#7dd3fc;">surcharge_rate</span> = standard_rate + 5pp <span style="color:#94a3b8;">(if price ≥ £40,000)</span><br>
+      <span style="color:#86efac;">— Non-resident —</span><br>
+      <span style="color:#7dd3fc;">nonres_rate</span> = applicable_rate + 2pp<br>
+      <span style="color:#86efac;">— Scotland ADS —</span><br>
+      <span style="color:#7dd3fc;">total_lbtt</span> = banded_lbtt + (price × 0.08) <span style="color:#94a3b8;">(flat, if additional property)</span>
+    </div>
+    <p style="font-size:0.78rem;color:#94a3b8;margin:0;">Rates shown reflect current published thresholds. Always confirm the exact figure with your conveyancer or the official <a href="https://www.tax.service.gov.uk/calculate-stamp-duty-land-tax/#/intro" style="color:#7dd3fc;">HMRC calculator</a> before exchange.</p>
+  </div>
+
+  <h2 class="st">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">How much is stamp duty in the UK in 2026?</button>
+    <div class="faq-a">In England/NI, SDLT is 0% up to £125,000, 2% up to £250,000, 5% up to £925,000, 10% up to £1.5m, and 12% above. First-time buyers pay 0% up to £300,000. Second homes/buy-to-lets pay an extra 5 percentage points on every band. Scotland (LBTT) and Wales (LTT) use different bands — select your region in the calculator above.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">Do I pay more stamp duty on a second home?</button>
+    <div class="faq-a">Yes. England/NI adds a 5 percentage point surcharge on every band for any additional residential property costing £40,000 or more. Scotland charges a flat 8% Additional Dwelling Supplement. Wales uses separate higher rates from 5% with no nil-rate band. The ADS/surcharge is refundable in Scotland if you sell your previous home within 36 months.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">Can I get a stamp duty refund?</button>
+    <div class="faq-a">Yes, in specific situations: selling your previous main home within 36 months of paying the second-home surcharge, missed Multiple Dwellings Relief on a qualifying purchase, or an incorrectly applied surcharge. Use our <a href="/refund-calculator/">stamp duty refund calculator</a> to check your situation.</div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">How much is stamp duty for first-time buyers?</button>
+    <div class="faq-a">In England/NI, first-time buyers pay 0% up to £300,000 and 5% between £300,001–£500,000. No relief applies above £500,000. Wales has no first-time buyer relief. Scotland raises the LBTT nil-rate band to £175,000 for first-time buyers, saving up to £600.</div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="fca-footer">
+      <strong>Disclaimer:</strong> This tool provides information only and does not constitute tax or legal advice. Figures are based on 2026 HMRC/Revenue Scotland/Welsh Revenue Authority published rates. For a binding calculation, consult a solicitor/conveyancer or the official <a href="https://www.tax.service.gov.uk/calculate-stamp-duty-land-tax/#/intro">HMRC SDLT calculator</a>.
+    </div>
+    <p>Data based on 2026 HMRC / Revenue Scotland / Welsh Revenue Authority rates · Updated July 2026</p>
+    <p style="font-size:.72rem;margin-top:8px;">Stamp Duty Calculator is part of Gesmine-Invest Limited, registered UK company number 14120136, registered office address at Hardy House, 269 Poynders Gardens, London, London, United Kingdom, SW4 8PQ.</p>
+  </div>
+</footer>
+
+<script>
+// ─── BAND TABLES ────────────────────────────────────────────
+const BANDS = {
+  england_standard: [ {upper:125000,rate:0}, {upper:250000,rate:0.02}, {upper:925000,rate:0.05}, {upper:1500000,rate:0.10}, {upper:Infinity,rate:0.12} ],
+  england_ftb:      [ {upper:300000,rate:0}, {upper:500000,rate:0.05} ],
+  england_surcharge:[ {upper:125000,rate:0.05}, {upper:250000,rate:0.07}, {upper:925000,rate:0.10}, {upper:1500000,rate:0.15}, {upper:Infinity,rate:0.17} ],
+  scotland_standard:[ {upper:145000,rate:0}, {upper:250000,rate:0.02}, {upper:325000,rate:0.05}, {upper:750000,rate:0.10}, {upper:Infinity,rate:0.12} ],
+  scotland_ftb:     [ {upper:175000,rate:0}, {upper:250000,rate:0.02}, {upper:325000,rate:0.05}, {upper:750000,rate:0.10}, {upper:Infinity,rate:0.12} ],
+  wales_standard:   [ {upper:225000,rate:0}, {upper:400000,rate:0.06}, {upper:750000,rate:0.075}, {upper:1500000,rate:0.10}, {upper:Infinity,rate:0.12} ],
+  wales_higher:     [ {upper:180000,rate:0.05}, {upper:250000,rate:0.085}, {upper:400000,rate:0.10}, {upper:750000,rate:0.125}, {upper:1500000,rate:0.15}, {upper:Infinity,rate:0.17} ]
+};
+const NON_RES_SURCHARGE_PP = 0.02;
+const SCOTLAND_ADS_RATE = 0.08;
+const SURCHARGE_MIN_PRICE = 40000;
+
+function bandedTax(price, bands) {
+  let tax = 0, lower = 0, rows = [];
+  for (const b of bands) {
+    if (price <= lower) break;
+    const taxable = Math.min(price, b.upper) - lower;
+    if (taxable > 0) {
+      const t = taxable * b.rate;
+      tax += t;
+      rows.push({ from: lower, to: Math.min(price, b.upper), rate: b.rate, tax: t });
+    }
+    lower = b.upper;
+  }
+  return { tax, rows };
+}
+
+let region = 'england', buyer = 'main', nonRes = false;
+
+document.getElementById('regionSeg').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  region = e.target.dataset.region;
+  document.getElementById('nonResWrap').style.display = region === 'england' ? '' : 'none';
+});
+
+document.getElementById('buyerSeg').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  buyer = e.target.dataset.buyer;
+});
+
+function setNonRes(val) {
+  nonRes = val;
+  document.getElementById('nonResNo').classList.toggle('active', !val);
+  document.getElementById('nonResYes').classList.toggle('active', val);
+}
+
+function fmtGBP(n) {
+  return '£' + Math.round(n).toLocaleString();
+}
+
+function calcEngland(price, buyer, nonRes) {
+  let bands;
+  let usedRelief = false;
+  if (buyer === 'additional' && price >= SURCHARGE_MIN_PRICE) {
+    bands = BANDS.england_surcharge;
+  } else if (buyer === 'ftb' && price <= 500000) {
+    bands = BANDS.england_ftb;
+    usedRelief = true;
+  } else {
+    bands = BANDS.england_standard;
+  }
+  let { tax, rows } = bandedTax(price, bands);
+  if (nonRes) {
+    tax += price * NON_RES_SURCHARGE_PP;
+    rows.push({ from: 0, to: price, rate: NON_RES_SURCHARGE_PP, tax: price * NON_RES_SURCHARGE_PP, label: 'Non-resident surcharge (flat 2%)' });
+  }
+  return { tax, rows, note: buyer === 'ftb' && price > 500000 ? 'Price exceeds £500,000 — first-time buyer relief does not apply; standard rates used.' : (usedRelief ? 'First-time buyer relief applied.' : null) };
+}
+
+function calcScotland(price, buyer) {
+  const bands = buyer === 'ftb' ? BANDS.scotland_ftb : BANDS.scotland_standard;
+  let { tax, rows } = bandedTax(price, bands);
+  if (buyer === 'additional' && price >= SURCHARGE_MIN_PRICE) {
+    const ads = price * SCOTLAND_ADS_RATE;
+    tax += ads;
+    rows.push({ from: 0, to: price, rate: SCOTLAND_ADS_RATE, tax: ads, label: 'Additional Dwelling Supplement (flat 8%)' });
+  }
+  return { tax, rows, note: null };
+}
+
+function calcWales(price, buyer) {
+  const bands = buyer === 'additional' && price >= SURCHARGE_MIN_PRICE ? BANDS.wales_higher : BANDS.wales_standard;
+  const { tax, rows } = bandedTax(price, bands);
+  return { tax, rows, note: buyer === 'ftb' ? 'Wales has no first-time buyer relief — standard rates applied.' : null };
+}
+
+function calculate() {
+  const price = parseFloat(document.getElementById('price').value) || 0;
+  let result;
+  if (region === 'england') result = calcEngland(price, buyer, nonRes);
+  else if (region === 'scotland') result = calcScotland(price, buyer);
+  else result = calcWales(price, buyer);
+
+  const effRate = price > 0 ? (result.tax / price * 100) : 0;
+
+  document.getElementById('r-total').textContent = fmtGBP(result.tax);
+  document.getElementById('r-sub').textContent = `${regionLabel(region)} · ${buyerLabel(buyer)}`;
+  document.getElementById('r-effective').textContent = effRate.toFixed(2) + '%';
+  document.getElementById('r-netprice').textContent = fmtGBP(price);
+  document.getElementById('r-net').textContent = fmtGBP(price + result.tax);
+
+  const bb = document.getElementById('bandBreakdown');
+  bb.innerHTML = result.rows.map(r =>
+    `<div class="bb-row"><span>${r.label || fmtGBP(r.from) + ' – ' + (r.to === Infinity ? '∞' : fmtGBP(r.to)) + ' @ ' + (r.rate*100).toFixed(1) + '%'}</span><span>${fmtGBP(r.tax)}</span></div>`
+  ).join('') + `<div class="bb-row total"><span>Total</span><span>${fmtGBP(result.tax)}</span></div>` +
+  (result.note ? `<div class="bb-row" style="color:#94a3b8;font-style:italic;">${result.note}</div>` : '');
+
+  const nudge = document.getElementById('refundNudge');
+  if (buyer === 'additional') {
+    document.getElementById('refundReason').textContent = 'second-home surcharges are a common overpayment trigger (wrong classification, missed Multiple Dwellings Relief, or you sell your previous home within 36 months).';
+    nudge.style.display = 'block';
+  } else {
+    nudge.style.display = 'none';
+  }
+
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function regionLabel(r) { return { england: 'England/NI (SDLT)', scotland: 'Scotland (LBTT)', wales: 'Wales (LTT)' }[r]; }
+function buyerLabel(b) { return { main: 'Main home', ftb: 'First-time buyer', additional: 'Second home / BTL' }[b]; }
+
+function toggleFaq(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+// ─── SATELLITE LINKS ────────────────────────────────────────
+const SATELLITES = [
+  { href: '/second-home/', icon: '🏘️', title: 'Second Home Stamp Duty', desc: 'Full surcharge breakdown for second homes and buy-to-let purchases.' },
+  { href: '/scotland/', icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', title: 'Scotland LBTT Calculator', desc: 'Land and Buildings Transaction Tax bands + Additional Dwelling Supplement.' },
+  { href: '/wales/', icon: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', title: 'Wales LTT Calculator', desc: 'Land Transaction Tax bands, standard and higher rates.' },
+  { href: '/first-time-buyer/', icon: '🔑', title: 'First-Time Buyer Calculator', desc: 'Relief thresholds and savings for first-time buyers.' },
+  { href: '/buy-to-let/', icon: '🏢', title: 'Buy-to-Let Calculator', desc: 'Investor-specific surcharge breakdown by region.' },
+  { href: '/threshold/', icon: '📊', title: 'Stamp Duty Thresholds', desc: 'Full current band tables for England, Scotland and Wales at a glance.' },
+  { href: '/refund-calculator/', icon: '💷', title: 'Stamp Duty Refund Calculator', desc: 'Check if you overpaid — second-home surcharge, MDR, and reclaim eligibility.', money: true }
+];
+const satGrid = document.getElementById('sat-grid');
+satGrid.innerHTML = SATELLITES.map(s => `
+  <a href="${s.href}" class="sat-link${s.money ? ' money' : ''}">
+    <div class="si">${s.icon}</div>
+    <div class="st2">${s.title}</div>
+    <div class="sd">${s.desc}</div>
+  </a>
+`).join('');
+</script>
+</body>
+</html>
