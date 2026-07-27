@@ -47,6 +47,14 @@ in copy, (2) mortgage broker affiliate (Habito etc.), (3) conveyancer/
 solicitor affiliate (Compare My Move etc.), (4) display ads once traffic is
 stable, (5) removals/moving services (tertiary).
 
+## Free Companion Tools
+
+- [Stamp Duty Overpayment Checker](https://sadiyaqeen92639572-cloud.github.io/stamp-duty-overpayment-checker/) —
+  quick England-only estimate flagging common SDLT overpayment triggers
+  (second-home surcharge, missed FTB relief, non-resident surcharge, MDR).
+  Links through to the full [refund calculator](https://checkstampduty.co.uk/refund-calculator/)
+  above for exact figures and Scotland/Wales coverage.
+
 ## Data sources & disclaimer
 
 Rates are **guidance** compiled from HMRC (SDLT), Revenue Scotland (LBTT) and
