@@ -387,6 +387,7 @@
 
 <div class="container" style="padding-top:0;">
   <div class="eeat-section">
+    <!-- TODO: replace author-card below with a named reviewer (accountant/conveyancer/chartered surveyor) once a real, confirmed person is available. Do not add a professional credential without a verified real person behind it. -->
     <h2 class="eeat-title">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
       Transparency &amp; Methodology
@@ -477,17 +478,20 @@ function bandedTax(price, bands) {
   return { tax, rows };
 }
 
-let region = 'england', buyer = 'main', nonRes = false;
+let region = 'england', buyer = 'main', nonRes = !!window.__pageNonResDefault;
 
-document.getElementById('regionSeg').addEventListener('click', e => {
+const regionSegEl = document.getElementById('regionSeg');
+if (regionSegEl) regionSegEl.addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
   region = e.target.dataset.region;
-  document.getElementById('nonResWrap').style.display = region === 'england' ? '' : 'none';
+  const nonResWrapEl = document.getElementById('nonResWrap');
+  if (nonResWrapEl) nonResWrapEl.style.display = region === 'england' ? '' : 'none';
 });
 
-document.getElementById('buyerSeg').addEventListener('click', e => {
+const buyerSegEl = document.getElementById('buyerSeg');
+if (buyerSegEl) buyerSegEl.addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
@@ -588,7 +592,11 @@ const SATELLITES = [
   { href: '/wales/', icon: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', title: 'Wales LTT Calculator', desc: 'Land Transaction Tax bands, standard and higher rates.' },
   { href: '/first-time-buyer/', icon: '🔑', title: 'First-Time Buyer Calculator', desc: 'Relief thresholds and savings for first-time buyers.' },
   { href: '/buy-to-let/', icon: '🏢', title: 'Buy-to-Let Calculator', desc: 'Investor-specific surcharge breakdown by region.' },
+  { href: '/non-resident/', icon: '🌍', title: 'Non-Resident Buyer Calculator', desc: '2% overseas buyer surcharge and the 183-day residence test.' },
+  { href: '/limited-company/', icon: '🏢', title: 'Limited Company Buyer Calculator', desc: '15% flat rate above £500k for corporate/enveloped purchases.' },
   { href: '/threshold/', icon: '📊', title: 'Stamp Duty Thresholds', desc: 'Full current band tables for England, Scotland and Wales at a glance.' },
+  { href: '/guides/', icon: '📚', title: 'Guides', desc: 'What is stamp duty, payment deadlines, 2025 changes, and mortgage financing.' },
+  { href: '/cities/', icon: '📍', title: 'Browse by City', desc: 'London, Manchester, Birmingham, Edinburgh, Cardiff — pre-filled with real average prices.' },
   { href: '/refund-calculator/', icon: '💷', title: 'Stamp Duty Refund Calculator', desc: 'Check if you overpaid — second-home surcharge, MDR, and reclaim eligibility.', money: true }
 ];
 const satGrid = document.getElementById('sat-grid');

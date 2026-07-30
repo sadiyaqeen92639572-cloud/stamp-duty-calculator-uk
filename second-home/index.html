@@ -137,7 +137,7 @@
         <label>Non-UK resident? <span class="hint">— adds England/NI surcharge only</span></label>
         <div class="seg-row">
           <button class="active" id="nonResNo" onclick="setNonRes(false)">No</button>
-          <button id="nonResYes" onclick="setNonRes(true)">Yes</button>
+          <button  id="nonResYes" onclick="setNonRes(true)">Yes</button>
         </div>
       </div>
     </div>
@@ -192,6 +192,8 @@
   <div class="back-links">
     <a href="/">← Main stamp duty calculator</a>
     <a href="/refund-calculator/">Check refund eligibility →</a>
+    <a href="/guides/what-is-stamp-duty/">What is stamp duty? →</a>
+    <a href="/guides/stamp-duty-payment-deadlines/">Payment deadlines →</a>
   </div>
 </div>
 </div>
@@ -201,6 +203,7 @@
     <p>Data based on 2026 rates · Updated July 2026</p>
   </div>
 </footer>
+<script>window.__pageNonResDefault = false;</script>
 <script>
 const BANDS = {
   england_standard: [ {upper:125000,rate:0}, {upper:250000,rate:0.02}, {upper:925000,rate:0.05}, {upper:1500000,rate:0.10}, {upper:Infinity,rate:0.12} ],
@@ -230,16 +233,19 @@ function bandedTax(price, bands) {
   return { tax, rows };
 }
 
-let region = 'england', buyer = 'main', nonRes = false;
+let region = 'england', buyer = 'main', nonRes = !!window.__pageNonResDefault;
 
-document.getElementById('regionSeg').addEventListener('click', e => {
+const regionSegEl = document.getElementById('regionSeg');
+if (regionSegEl) regionSegEl.addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
   region = e.target.dataset.region;
-  document.getElementById('nonResWrap').style.display = region === 'england' ? '' : 'none';
+  const nonResWrapEl = document.getElementById('nonResWrap');
+  if (nonResWrapEl) nonResWrapEl.style.display = region === 'england' ? '' : 'none';
 });
-document.getElementById('buyerSeg').addEventListener('click', e => {
+const buyerSegEl = document.getElementById('buyerSeg');
+if (buyerSegEl) buyerSegEl.addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');

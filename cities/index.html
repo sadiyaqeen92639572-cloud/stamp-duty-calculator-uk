@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stamp Duty Calculator By City — 2026</title>
+<meta name="description" content="Stamp duty calculators for UK cities, pre-filled with each city's real average property price. London, Manchester, Birmingham, Edinburgh, Cardiff.">
+<link rel="canonical" href="https://checkstampduty.co.uk/cities/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png">
+<meta name="google-site-verification" content="m4ovmDFcrhAbFLC1Ix28d793SYzD--JWQ2n8UtetMSg" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --brand: #0f6e4f; --brand-dark: #0a4d38; --brand-light: #e6f5ee;
+    --accent: #e63946; --text: #1a1a2e; --muted: #64748b;
+    --border: #e2e8f0; --bg: #f8fafc; --radius: 12px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); font-size: 16px; line-height: 1.65; }
+  header { background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 100%); color: white; padding: 52px 20px 88px; text-align: center; }
+  header .badge { display: inline-block; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; font-weight: 600; letter-spacing: .4px; margin-bottom: 16px; }
+  header h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 12px; }
+  header p { color: rgba(255,255,255,.9); font-size: 1rem; max-width: 620px; margin: 0 auto; }
+  .container { max-width: 840px; margin: 0 auto; padding: 0 20px; }
+  .tool-wrapper { margin: -56px auto 56px; }
+  .tool-card { background: white; border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,0.12); border: 1px solid var(--border); padding: 36px 32px; }
+  @media (max-width: 580px) { .tool-card { padding: 22px 16px; } }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 580px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 0.79rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  label .hint { font-weight: 400; text-transform: none; font-size: 0.75rem; color: #94a3b8; }
+  select, input[type=number] { border: 2px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 1rem; color: var(--text); background: white; width: 100%; transition: border-color .2s; }
+  select:focus, input[type=number]:focus { outline: none; border-color: var(--brand); }
+  input[type=number] { -moz-appearance: textfield; }
+  input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .seg-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .seg-row button { flex: 1; min-width: 90px; padding: 10px 12px; border: 2px solid var(--border); background: white; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .15s; }
+  .seg-row button.active { border-color: var(--brand); background: var(--brand-light); color: var(--brand-dark); }
+  .calc-btn { width: 100%; margin-top: 24px; padding: 17px; background: var(--brand); color: white; border: none; border-radius: 10px; font-size: 1.08rem; font-weight: 700; cursor: pointer; transition: background .2s; letter-spacing: .2px; }
+  .calc-btn:hover { background: var(--brand-dark); }
+  .result { display: none; margin-top: 28px; }
+  .result-hero { background: linear-gradient(135deg, var(--brand-dark), var(--brand)); border-radius: 10px; padding: 28px; color: white; text-align: center; margin-bottom: 16px; }
+  .result-hero .rl { font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; opacity: .8; margin-bottom: 4px; }
+  .result-hero .ra { font-size: 2.6rem; font-weight: 900; line-height: 1.1; }
+  .result-hero .rs { font-size: 0.9rem; opacity: .85; margin-top: 6px; }
+  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  @media (max-width: 480px) { .result-grid { grid-template-columns: 1fr 1fr; } }
+  .r-stat { background: var(--brand-light); border-radius: 8px; padding: 14px; text-align: center; }
+  .r-stat .sv { font-size: 1.25rem; font-weight: 800; color: var(--brand); }
+  .r-stat .sl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .band-breakdown { background: #f1f5f9; border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; font-size: 0.83rem; }
+  .band-breakdown .bb-row { display: flex; justify-content: space-between; padding: 4px 0; color: #475569; }
+  .band-breakdown .bb-row.total { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px; font-weight: 700; color: var(--text); }
+  .fca-notice { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px; font-size: 0.78rem; color: #78350f; }
+  .refund-nudge { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 0.85rem; color: #7c2d12; display: none; }
+  .refund-nudge a { color: var(--accent); font-weight: 700; }
+  .content { padding-bottom: 64px; }
+  h2.st { font-size: 1.3rem; font-weight: 800; margin: 52px 0 18px; }
+  p { color: #374151; margin-bottom: 14px; line-height: 1.75; }
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .data-table th { background: var(--brand); color: white; padding: 10px 14px; text-align: left; font-weight: 600; white-space: nowrap; }
+  .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .data-table tr:nth-child(even) td { background: #f8faff; }
+  .highlight { font-weight: 700; color: var(--brand); }
+  .local-note { background: white; border: 1px solid var(--border); border-left: 4px solid var(--brand); border-radius: 8px; padding: 18px 20px; margin: 20px 0; font-size: 0.92rem; }
+  .source-tag { font-size: 0.72rem; color: var(--muted); margin-top: -8px; margin-bottom: 20px; }
+  .back-links { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 40px; }
+  .back-links a { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; text-decoration: none; color: var(--text); font-size: 0.85rem; font-weight: 600; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q { width: 100%; background: none; border: none; text-align: left; padding: 18px 0; font-size: 0.92rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+  .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--brand); flex-shrink: 0; margin-left: 12px; }
+  .faq-q.open::after { content: '−'; }
+  .faq-a { display: none; padding: 0 0 16px; font-size: 0.88rem; color: #4b5563; line-height: 1.75; }
+  .faq-a.open { display: block; }
+  footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 32px 20px; font-size: 0.8rem; }
+  footer p { color: #94a3b8; }
+  footer a { color: #cbd5e1; }
+  .fca-footer { background: #1e293b; border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; font-size: 0.78rem; color: #94a3b8; line-height: 1.6; }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="badge">📍 By City</div>
+    <h1>Stamp Duty Calculator By City</h1>
+    <p>Pre-filled with each city's real average property price, sourced and dated.</p>
+  </div>
+</header>
+<div class="container">
+<div class="content">
+  
+    <a href="/cities/london/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator London</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £553,000 (ONS UK House Price Index, November 2025) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/manchester/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Manchester</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £247,000 (ONS UK House Price Index, May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/birmingham/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Birmingham</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £233,000 (ONS UK House Price Index, May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/edinburgh/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Edinburgh</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £314,321 (ESPC House Price Report (Aug–Oct 2025), August–October 2025) — Scotland (LBTT)</span>
+    </a>
+    <a href="/cities/cardiff/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Cardiff</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £273,000 (ONS UK House Price Index, May 2026 (provisional)) — Wales (LTT)</span>
+    </a>
+    <a href="/cities/glasgow/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Glasgow</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £237,000 (ONS UK House Price Index (home-mover average), May 2026 (provisional)) — Scotland (LBTT)</span>
+    </a>
+    <a href="/cities/bristol/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Bristol</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £355,000 (ONS UK House Price Index, May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/leeds/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Leeds</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £250,000 (ONS UK House Price Index (mortgage average), May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/liverpool/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Liverpool</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £184,000 (ONS UK House Price Index, April 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/newcastle/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Newcastle upon Tyne</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £213,000 (ONS UK House Price Index (mortgage average), April 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/sheffield/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Sheffield</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £226,000 (ONS UK House Price Index (mortgage average), April 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/nottingham/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Nottingham</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £195,000 (ONS UK House Price Index (mortgage average), March 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/southampton/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Southampton</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £236,000 (ONS UK House Price Index, May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/brighton/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Brighton</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £404,000 (ONS UK House Price Index (Brighton and Hove), May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/oxford/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Oxford</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £473,000 (ONS UK House Price Index, May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+    <a href="/cities/cambridge/" class="back-links" style="display:block;margin:0 0 12px;">
+      <strong>Stamp Duty Calculator Cambridge</strong><br><span style="font-size:.85rem;color:var(--muted);">Average price £467,000 (ONS UK House Price Index, May 2026 (provisional)) — England / NI (SDLT)</span>
+    </a>
+  <div class="back-links"><a href="/">← Main stamp duty calculator</a></div>
+</div>
+</div>
+<footer><div class="container"><p>Updated July 2026</p></div></footer>
+</body>
+</html>

@@ -110,16 +110,19 @@ function bandedTax(price, bands) {
   return { tax, rows };
 }
 
-let region = 'england', buyer = 'main', nonRes = false;
+let region = 'england', buyer = 'main', nonRes = !!window.__pageNonResDefault;
 
-document.getElementById('regionSeg').addEventListener('click', e => {
+const regionSegEl = document.getElementById('regionSeg');
+if (regionSegEl) regionSegEl.addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
   region = e.target.dataset.region;
-  document.getElementById('nonResWrap').style.display = region === 'england' ? '' : 'none';
+  const nonResWrapEl = document.getElementById('nonResWrap');
+  if (nonResWrapEl) nonResWrapEl.style.display = region === 'england' ? '' : 'none';
 });
-document.getElementById('buyerSeg').addEventListener('click', e => {
+const buyerSegEl = document.getElementById('buyerSeg');
+if (buyerSegEl) buyerSegEl.addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
@@ -188,7 +191,7 @@ const REFUND_CTA_SNIPPET = `
         ⚠️ <strong>Overpayment risk:</strong> <span id="refundReason"></span> — <a href="/refund-calculator/">check refund eligibility →</a>
       </div>`;
 
-function toolMarkup(regionDefault) {
+function toolMarkup(regionDefault, nonResDefault) {
   const regionButtons = {
     england: `<button class="active" data-region="england">England / NI (SDLT)</button><button data-region="scotland">Scotland (LBTT)</button><button data-region="wales">Wales (LTT)</button>`,
     scotland: `<button data-region="england">England / NI (SDLT)</button><button class="active" data-region="scotland">Scotland (LBTT)</button><button data-region="wales">Wales (LTT)</button>`,
@@ -215,8 +218,8 @@ function toolMarkup(regionDefault) {
       <div class="form-group full" id="nonResWrap" style="display:${regionDefault === 'england' ? '' : 'none'}">
         <label>Non-UK resident? <span class="hint">— adds England/NI surcharge only</span></label>
         <div class="seg-row">
-          <button class="active" id="nonResNo" onclick="setNonRes(false)">No</button>
-          <button id="nonResYes" onclick="setNonRes(true)">Yes</button>
+          <button ${nonResDefault ? '' : 'class="active"'} id="nonResNo" onclick="setNonRes(false)">No</button>
+          <button ${nonResDefault ? 'class="active"' : ''} id="nonResYes" onclick="setNonRes(true)">Yes</button>
         </div>
       </div>
     </div>
@@ -238,7 +241,7 @@ function toolMarkup(regionDefault) {
     </div>`;
 }
 
-function pageShell({ slug, title, metaTitle, metaDesc, h1, intro, regionDefault, extraContent, faqs, canonicalPath }) {
+function pageShell({ slug, title, metaTitle, metaDesc, h1, intro, regionDefault, nonResDefault, extraContent, faqs, canonicalPath, guideLinks }) {
   const canonical = `${SITE_URL}${canonicalPath}`;
   const faqJsonLd = faqs.map(f => `{ "@type": "Question", "name": ${JSON.stringify(f.q)}, "acceptedAnswer": { "@type": "Answer", "text": ${JSON.stringify(f.a)} } }`).join(',\n        ');
   const faqHtml = faqs.map(f => `
@@ -292,7 +295,7 @@ function pageShell({ slug, title, metaTitle, metaDesc, h1, intro, regionDefault,
 <div class="container">
 <div class="tool-wrapper">
   <div class="tool-card">
-    ${toolMarkup(regionDefault)}
+    ${toolMarkup(regionDefault, nonResDefault)}
   </div>
 </div>
 <div class="content">
@@ -302,6 +305,7 @@ function pageShell({ slug, title, metaTitle, metaDesc, h1, intro, regionDefault,
   <div class="back-links">
     <a href="/">← Main stamp duty calculator</a>
     <a href="/refund-calculator/">Check refund eligibility →</a>
+    ${(guideLinks || []).map(l => `<a href="${l.href}">${l.label}</a>`).join('\n    ')}
   </div>
 </div>
 </div>
@@ -311,6 +315,7 @@ function pageShell({ slug, title, metaTitle, metaDesc, h1, intro, regionDefault,
     <p>Data based on 2026 rates · Updated July 2026</p>
   </div>
 </footer>
+<script>window.__pageNonResDefault = ${!!nonResDefault};</script>
 <script>${CALC_JS}</script>
 </body>
 </html>
@@ -345,7 +350,8 @@ const SATELLITES = [
       { q: 'How much extra stamp duty do I pay on a second home?', a: 'England/NI adds 5 percentage points to every SDLT band. Scotland charges a flat 8% Additional Dwelling Supplement. Wales uses separate higher-rate bands starting at 5% with no nil-rate threshold. The surcharge applies to any additional residential property costing £40,000 or more.' },
       { q: 'Can I reclaim the second home stamp duty surcharge?', a: 'Yes — if you sell your previous main residence within 36 months of buying the new one, you can reclaim the England/NI surcharge or Scottish ADS. Use our stamp duty refund calculator to check your eligibility and estimate the amount.' },
       { q: 'Does the second home surcharge apply to buy-to-let purchases?', a: 'Yes, buy-to-let purchases are treated the same as second homes for stamp duty purposes in all three nations — the surcharge applies whenever you already own another residential property.' }
-    ]
+    ],
+    guideLinks: [ { href: '/guides/what-is-stamp-duty/', label: 'What is stamp duty? →' }, { href: '/guides/stamp-duty-payment-deadlines/', label: 'Payment deadlines →' } ]
   },
   {
     slug: 'scotland',
@@ -373,7 +379,8 @@ const SATELLITES = [
       { q: 'What is LBTT?', a: 'Land and Buildings Transaction Tax (LBTT) is Scotland\'s equivalent of stamp duty, replacing SDLT in Scotland since 2015. It uses its own bands, set by Revenue Scotland.' },
       { q: 'How much is LBTT on a second home in Scotland?', a: 'The Additional Dwelling Supplement (ADS) adds a flat 8% of the whole purchase price on top of standard LBTT, for any additional residential property costing £40,000 or more.' },
       { q: 'Is there first-time buyer relief for LBTT?', a: 'Yes — first-time buyers get a nil-rate band raised to £175,000 (versus £145,000 standard), saving up to £600.' }
-    ]
+    ],
+    guideLinks: [ { href: '/guides/stamp-duty-payment-deadlines/', label: 'Payment deadlines (30 days) →' } ]
   },
   {
     slug: 'wales',
@@ -402,7 +409,8 @@ const SATELLITES = [
       { q: 'What is LTT?', a: 'Land Transaction Tax (LTT) is Wales\' equivalent of stamp duty, administered by the Welsh Revenue Authority since 2018, replacing SDLT in Wales.' },
       { q: 'Is there first-time buyer relief in Wales?', a: 'No — Wales abolished first-time buyer relief. First-time buyers pay the same standard LTT rates as any other main-home buyer.' },
       { q: 'How much is LTT on a second home in Wales?', a: 'Higher rates apply from 5% with no nil-rate band — every pound is taxed, unlike the standard rate which has a 0% band up to £225,000.' }
-    ]
+    ],
+    guideLinks: [ { href: '/guides/stamp-duty-payment-deadlines/', label: 'Payment deadlines (30 days) →' } ]
   },
   {
     slug: 'first-time-buyer',
@@ -425,7 +433,8 @@ const SATELLITES = [
     faqs: [
       { q: 'How much stamp duty do first-time buyers pay?', a: 'In England/NI: 0% up to £300,000, then 5% up to £500,000, with no relief above £500,000. Scotland raises the LBTT nil-rate band to £175,000. Wales has no first-time buyer relief at all.' },
       { q: 'What counts as a first-time buyer for stamp duty?', a: 'Generally, someone who has never owned a residential property anywhere in the world, and who is buying their only or main residence. Joint buyers must both qualify as first-time buyers.' }
-    ]
+    ],
+    guideLinks: [ { href: '/guides/stamp-duty-changes-2025/', label: 'What changed in 2025 →' }, { href: '/guides/adding-stamp-duty-to-mortgage/', label: 'Adding it to your mortgage →' } ]
   },
   {
     slug: 'buy-to-let',
@@ -442,7 +451,45 @@ const SATELLITES = [
     faqs: [
       { q: 'Do landlords pay more stamp duty?', a: 'Yes — buy-to-let purchases attract the same second-home surcharge as any additional residential property: +5pp per band in England/NI, +8% flat ADS in Scotland, or Wales\' higher-rate bands.' },
       { q: 'What is Multiple Dwellings Relief?', a: 'MDR can reduce stamp duty when a single transaction includes more than one dwelling (e.g. a house with a self-contained annexe, or several flats). It is frequently missed by conveyancers — check the refund calculator if this applied to a past purchase.' }
-    ]
+    ],
+    guideLinks: [ { href: '/guides/adding-stamp-duty-to-mortgage/', label: 'Adding it to your mortgage →' } ]
+  },
+  {
+    slug: 'non-resident',
+    title: 'Stamp Duty Calculator Non-Resident Buyer',
+    metaTitle: 'Stamp Duty Calculator Non-Resident Buyer 2026 — 2% Surcharge Explained',
+    metaDesc: 'Non-resident stamp duty calculator for England/NI. Calculate the extra 2% SDLT surcharge for overseas buyers, plus the 183-day residence test.',
+    h1: 'Stamp Duty Calculator — Non-Resident Buyer',
+    intro: 'Buying in England or Northern Ireland from overseas? A flat 2% non-resident surcharge applies on top of standard SDLT — use the calculator below (non-resident pre-selected).',
+    regionDefault: 'england',
+    nonResDefault: true,
+    extraContent: `
+      <h2 class="st">Non-Resident Stamp Duty Surcharge — How It Works</h2>
+      <p>England and Northern Ireland charge a flat <strong>2% SDLT surcharge</strong> on the whole purchase price for buyers who don't meet the UK residence test — on top of any other rate (standard, first-time buyer, or second-home surcharge). Scotland and Wales do not currently charge a separate non-resident surcharge.</p>
+      <div class="table-wrap"><table class="data-table">
+        <thead><tr><th>Test</th><th>Rule</th></tr></thead>
+        <tbody>
+          <tr><td>183-day test</td><td>Present in the UK for at least 183 days during the 12 months before completion = UK resident for this purchase</td></tr>
+          <tr><td>Joint buyers</td><td>If either buyer fails the residence test, the whole surcharge applies to the full price, not just their share</td></tr>
+          <tr><td>Refund window</td><td>If you become UK resident within 12 months of completion (183 days in the following 12 months), the surcharge can be reclaimed</td></tr>
+        </tbody>
+      </table></div>
+      <h2 class="st">The Formula</h2>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px 24px 16px;margin:0 0 32px;font-size:0.9rem;line-height:1.8;">
+        <div style="background:#12321f;color:#e2e8f0;border-radius:8px;padding:16px 18px;font-family:'Courier New',monospace;font-size:0.83rem;line-height:2;overflow-x:auto;">
+          <span style="color:#7dd3fc;">base_tax</span> = Σ over bands: (min(price, band_upper) − band_lower) × band_rate <span style="color:#94a3b8;">(standard, FTB, or second-home bands, whichever applies)</span><br>
+          <span style="color:#7dd3fc;">surcharge</span> = price × 0.02 <span style="color:#94a3b8;">(flat 2%, whole price, only if non-resident)</span><br>
+          <span style="color:#86efac;">total_sdlt</span> = base_tax + surcharge
+        </div>
+        <p style="font-size:0.78rem;color:#94a3b8;margin:12px 0 0;">The 2% is added on top of whichever base calculation applies (standard, first-time buyer, or second-home surcharge) — it is never the only rate applied.</p>
+      </div>
+      <p>Missed a valid refund? Check our <a href="/refund-calculator/">stamp duty refund calculator</a>.</p>`,
+    faqs: [
+      { q: 'Who counts as a non-resident for stamp duty?', a: 'You are treated as non-resident for SDLT purposes if you were not present in the UK for at least 183 days during the 12 months before completion. Different tests can apply for companies and trusts.' },
+      { q: 'Can I reclaim the non-resident stamp duty surcharge?', a: 'Yes — if you spend at least 183 days in the UK during the 12 months after completion, you can reclaim the 2% surcharge. Use the refund calculator to check the amount.' },
+      { q: 'Does the non-resident surcharge apply in Scotland or Wales?', a: 'No — the 2% non-resident surcharge is specific to SDLT in England and Northern Ireland. Scotland (LBTT) and Wales (LTT) do not currently charge an equivalent surcharge.' }
+    ],
+    guideLinks: [ { href: '/guides/what-is-stamp-duty/', label: 'What is stamp duty? →' } ]
   },
   {
     slug: 'threshold',
@@ -468,9 +515,199 @@ const SATELLITES = [
     faqs: [
       { q: 'What is the stamp duty threshold in 2026?', a: 'The nil-rate threshold is £125,000 in England/NI (standard), £300,000 for first-time buyers, £145,000 in Scotland (£175,000 for first-time buyers), and £225,000 in Wales. Second homes in Wales have no nil-rate band at all.' },
       { q: 'When did the current stamp duty thresholds start?', a: 'The England/NI thresholds shown here apply from 1 April 2025. Scotland and Wales bands are current for the 2025/26 and 2026/27 tax years per Revenue Scotland and the Welsh Revenue Authority.' }
-    ]
+    ],
+    guideLinks: [ { href: '/guides/stamp-duty-changes-2025/', label: 'What changed in 2025 →' } ]
   }
 ];
+
+// ─── Limited company / corporate buyer calculator ──────────────────────────
+// England/NI only. Verified via gov.uk/HMRC (Sch 4A FA2003 + Sch 4ZA):
+// residential purchases by a "non-natural person" (company, partnership with
+// a corporate member, or collective investment scheme) over £500,000 pay a
+// flat 15% SDLT rate on the whole price (17% if also non-resident), which
+// REPLACES the normal banded calculation. At or below £500,000, standard
+// company purchases are treated as additional-dwelling purchases (surcharge
+// bands), since companies can't claim first-time-buyer relief. Reliefs exist
+// (qualifying property rental businesses, development, employee housing,
+// Homes for Ukraine) that can bring the rate back down to standard bands —
+// always flagged on-page, never assumed.
+const LIMITED_COMPANY_PAGE = {
+  slug: 'limited-company',
+  metaTitle: 'Stamp Duty Calculator Limited Company 2026 — 15% Flat Rate Explained',
+  metaDesc: 'Stamp duty calculator for limited company and corporate buyers. 15% flat SDLT rate above £500,000, surcharge bands below — England/NI only.',
+  h1: 'Stamp Duty Calculator — Limited Company Buyer',
+  intro: 'Buying UK residential property through a limited company? A flat 15% SDLT rate applies above £500,000 — different rules from a personal purchase. England/NI only.',
+};
+
+function renderLimitedCompanyPage() {
+  const canonical = `${SITE_URL}/limited-company/`;
+  const faqs = [
+    { q: 'How much SDLT does a limited company pay on a residential property?', a: 'Above £500,000, a flat 15% SDLT rate applies to the whole price (17% if the company is also non-UK resident) — this replaces the normal banded calculation entirely. At or below £500,000, standard additional-dwelling surcharge bands apply, since companies cannot claim first-time-buyer relief.' },
+    { q: 'Are there reliefs from the 15% flat rate?', a: 'Yes — qualifying property rental businesses, property developers/traders, and property used for employee accommodation can generally claim relief back down to standard rates. This calculator does not apply any relief automatically; check eligibility with a solicitor or tax adviser before relying on the flat-rate figure.' },
+    { q: 'Does the 15% rate apply in Scotland or Wales?', a: 'No — this flat-rate regime (Schedule 4A, Finance Act 2003) is specific to SDLT in England and Northern Ireland. Scotland (LBTT) and Wales (LTT) do not have an equivalent flat rate for corporate buyers.' }
+  ];
+  const faqJsonLd = faqs.map(f => `{ "@type": "Question", "name": ${JSON.stringify(f.q)}, "acceptedAnswer": { "@type": "Answer", "text": ${JSON.stringify(f.a)} } }`).join(',\n        ');
+  const faqHtml = faqs.map(f => `
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">${f.q}</button>
+    <div class="faq-a">${f.a}</div>
+  </div>`).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${LIMITED_COMPANY_PAGE.metaTitle}</title>
+<meta name="description" content="${LIMITED_COMPANY_PAGE.metaDesc}">
+<link rel="canonical" href="${canonical}">
+<meta property="og:title" content="${LIMITED_COMPANY_PAGE.metaTitle}">
+<meta property="og:description" content="${LIMITED_COMPANY_PAGE.metaDesc}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${canonical}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="${SITE_URL}/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="${SITE_URL}/og-image.svg">
+<meta name="google-site-verification" content="m4ovmDFcrhAbFLC1Ix28d793SYzD--JWQ2n8UtetMSg" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebApplication", "name": "Stamp Duty Calculator Limited Company", "url": "${canonical}", "description": "${LIMITED_COMPANY_PAGE.metaDesc}", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "inLanguage": "en-GB", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" }, "areaServed": { "@type": "Country", "name": "United Kingdom" } },
+    { "@type": "FAQPage", "mainEntity": [
+        ${faqJsonLd}
+      ] },
+    { "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": "${SITE_URL}/" }, { "@type": "ListItem", "position": 2, "name": "Stamp Duty Calculator Limited Company", "item": "${canonical}" } ] }
+  ]
+}
+</script>
+<style>${CSS}</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="badge">🏢 Corporate Buyer · 2026</div>
+    <h1>${LIMITED_COMPANY_PAGE.h1}</h1>
+    <p>${LIMITED_COMPANY_PAGE.intro}</p>
+  </div>
+</header>
+<div class="container">
+<div class="tool-wrapper">
+  <div class="tool-card">
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Property Price (£)</label>
+        <input type="number" id="price" min="0" step="1000" value="600000" placeholder="e.g. 600000">
+      </div>
+      <div class="form-group full">
+        <label>Company non-UK resident? <span class="hint">— adds 2% on top of the flat rate above £500k</span></label>
+        <div class="seg-row">
+          <button class="active" id="nonResNo" onclick="setNonRes(false)">No</button>
+          <button id="nonResYes" onclick="setNonRes(true)">Yes</button>
+        </div>
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calculateCompany()">Calculate Stamp Duty →</button>
+
+    <div class="result" id="result">
+      <div class="result-hero">
+        <div class="rl">Stamp Duty Owed</div>
+        <div class="ra" id="r-total"></div>
+        <div class="rs" id="r-sub"></div>
+      </div>
+      <div class="result-grid">
+        <div class="r-stat"><div class="sv" id="r-effective"></div><div class="sl">Effective rate</div></div>
+        <div class="r-stat"><div class="sv" id="r-netprice"></div><div class="sl">Property price</div></div>
+        <div class="r-stat"><div class="sv" id="r-net"></div><div class="sl">Price + tax</div></div>
+      </div>
+      <div class="band-breakdown" id="bandBreakdown"></div>
+      <div class="fca-notice">ℹ️ <strong>Disclaimer:</strong> Assumes no relief applies. Qualifying property rental businesses, developers/traders, and employee-accommodation purchases may bring this back down to standard bands — confirm eligibility with a solicitor or tax adviser before relying on this figure. Not tax or legal advice.</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <h2 class="st">Why Company Purchases Are Different</h2>
+  <p>Residential property bought by a "non-natural person" — a company, a partnership with a corporate member, or a collective investment scheme — follows different SDLT rules from a personal purchase, in England and Northern Ireland only:</p>
+  <div class="table-wrap"><table class="data-table">
+    <thead><tr><th>Price</th><th>Rate</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td>£0 – £500,000</td><td class="highlight">Standard additional-dwelling surcharge bands</td><td>Companies never qualify for first-time-buyer relief</td></tr>
+      <tr><td>Above £500,000</td><td class="highlight">Flat 15% (17% if non-resident) on the whole price</td><td>Schedule 4A, Finance Act 2003 — replaces banded calculation entirely</td></tr>
+    </tbody>
+  </table></div>
+  <p>Reliefs can bring the rate back down to standard bands — most commonly for property rental businesses, property developers/traders, and employee accommodation. This calculator assumes no relief applies; always confirm with a solicitor or tax adviser.</p>
+
+  <h2 class="st">The Formula</h2>
+  <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px 24px 16px;margin:0 0 32px;font-size:0.9rem;line-height:1.8;">
+    <p style="margin-bottom:16px;color:#64748b;font-size:0.82rem;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Source: Schedule 4A, Finance Act 2003 (15% flat rate) + Schedule 4ZA (additional-dwelling bands) — assumes no relief applies.</p>
+    <div style="background:#12321f;color:#e2e8f0;border-radius:8px;padding:18px 20px;font-family:'Courier New',monospace;font-size:0.83rem;line-height:2;overflow-x:auto;">
+      <span style="color:#86efac;">if price ≤ £500,000:</span><br>
+      &nbsp;&nbsp;<span style="color:#7dd3fc;">tax</span> = Σ over additional-dwelling bands: (min(price, band_upper) − band_lower) × band_rate<br>
+      <span style="color:#86efac;">if price &gt; £500,000:</span><br>
+      &nbsp;&nbsp;<span style="color:#7dd3fc;">rate</span> = 0.15 + (0.02 <span style="color:#94a3b8;">if non-resident</span>)<br>
+      &nbsp;&nbsp;<span style="color:#7dd3fc;">tax</span> = price × rate <span style="color:#94a3b8;">(flat, whole price — not marginal, replaces the banded calculation entirely)</span>
+    </div>
+    <p style="font-size:0.78rem;color:#94a3b8;margin:12px 0 0;">Unlike every other calculator on this site, the &gt;£500,000 case is not a marginal band calculation — one flat rate applies to the entire price the moment it crosses the threshold.</p>
+  </div>
+
+  <h2 class="st">Frequently Asked Questions</h2>
+  ${faqHtml}
+
+  <div class="back-links">
+    <a href="/">← Main stamp duty calculator</a>
+    <a href="/buy-to-let/">Buy-to-let calculator</a>
+    <a href="/refund-calculator/">Check refund eligibility →</a>
+    <a href="/guides/what-is-stamp-duty/">What is stamp duty? →</a>
+  </div>
+</div>
+</div>
+<footer>
+  <div class="container">
+    <div class="fca-footer"><strong>Disclaimer:</strong> Information only, not tax or legal advice. Assumes no relief applies. Confirm with a solicitor or chartered tax adviser before relying on this figure.</div>
+    <p>Data based on 2026 rates · Updated July 2026</p>
+  </div>
+</footer>
+<script>
+${CALC_JS}
+function calculateCompany() {
+  const price = parseFloat(document.getElementById('price').value) || 0;
+  const FLAT_RATE_THRESHOLD = 500000;
+  const FLAT_RATE = 0.15;
+  let tax, rows, note;
+  if (price > FLAT_RATE_THRESHOLD) {
+    const rate = FLAT_RATE + (nonRes ? NON_RES_SURCHARGE_PP : 0);
+    tax = price * rate;
+    rows = [{ from: 0, to: price, rate, tax, label: (nonRes ? 'Flat 15% + 2% non-resident' : 'Flat 15%') + ' (Sch 4A FA2003, whole price)' }];
+    note = 'Assumes no relief applies — see disclaimer above.';
+  } else {
+    const result = bandedTax(price, BANDS.england_surcharge);
+    tax = result.tax; rows = result.rows;
+    if (nonRes) { tax += price * NON_RES_SURCHARGE_PP; rows.push({ from: 0, to: price, rate: NON_RES_SURCHARGE_PP, tax: price * NON_RES_SURCHARGE_PP, label: 'Non-resident surcharge (flat 2%)' }); }
+    note = 'At or below £500,000: standard additional-dwelling surcharge bands apply (no flat rate).';
+  }
+  const effRate = price > 0 ? (tax / price * 100) : 0;
+  document.getElementById('r-total').textContent = fmtGBP(tax);
+  document.getElementById('r-sub').textContent = 'Limited company / corporate buyer';
+  document.getElementById('r-effective').textContent = effRate.toFixed(2) + '%';
+  document.getElementById('r-netprice').textContent = fmtGBP(price);
+  document.getElementById('r-net').textContent = fmtGBP(price + tax);
+  const bb = document.getElementById('bandBreakdown');
+  bb.innerHTML = rows.map(r => '<div class="bb-row"><span>' + (r.label || fmtGBP(r.from) + ' – ' + (r.to === Infinity ? '∞' : fmtGBP(r.to)) + ' @ ' + (r.rate*100).toFixed(1) + '%') + '</span><span>' + fmtGBP(r.tax) + '</span></div>').join('') +
+    '<div class="bb-row total"><span>Total</span><span>' + fmtGBP(tax) + '</span></div>' +
+    '<div class="bb-row" style="color:#94a3b8;font-style:italic;">' + note + '</div>';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
+`;
+}
 
 // ─── Refund calculator — the money page ────────────────────────────────────
 const REFUND_PAGE = {
@@ -607,9 +844,9 @@ function renderRefundPage() {
 
   <div class="satellite-cta">
     <h3 style="margin-bottom:8px;">Think you're owed money back?</h3>
-    <p style="margin-bottom:0;">Specialist no-win-no-fee reclaim firms handle the HMRC paperwork and only charge a fee if your claim succeeds.</p>
-    <a href="#" rel="noopener sponsored" target="_blank">Check Your Reclaim Eligibility →</a>
-    <p style="font-size:.72rem;color:#9a3412;margin-top:10px;">Affiliate placeholder — replace with confirmed reclaim-firm partner link and verified commission terms before publishing live.</p>
+    <p style="margin-bottom:0;">You can apply directly to HMRC for a stamp duty repayment — no need to pay anyone a fee to do this for you.</p>
+    <!-- TODO: swap for confirmed reclaim-firm affiliate link + verified commission terms once a partner is signed -->
+    <a href="https://www.gov.uk/guidance/stamp-duty-land-tax-apply-for-a-repayment" rel="noopener" target="_blank">How to Apply for a Repayment on gov.uk →</a>
   </div>
 
   <h2 class="st">Frequently Asked Questions</h2>
@@ -619,6 +856,7 @@ function renderRefundPage() {
     <a href="/">← Main stamp duty calculator</a>
     <a href="/second-home/">Second home calculator</a>
     <a href="/buy-to-let/">Buy-to-let calculator</a>
+    <a href="/guides/stamp-duty-payment-deadlines/">Payment deadlines →</a>
   </div>
 </div>
 </div>
@@ -669,6 +907,99 @@ function calculateRefund() {
 `;
 }
 
+// ─── Embeddable widget (iframe target — noindex, no chrome) ───────────────
+function renderWidgetPage() {
+  return `<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stamp Duty Calculator Widget</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  ${CSS}
+  body { background: transparent; }
+  .tool-card { box-shadow: none; border: 1px solid var(--border); }
+  .container { max-width: none; padding: 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="tool-card">
+    ${toolMarkup('england', false)}
+  </div>
+</div>
+<script>${CALC_JS}</script>
+<script>
+function reportHeight() {
+  const h = document.body.scrollHeight;
+  if (window.parent) window.parent.postMessage({ checkStampDutyWidgetHeight: h }, '*');
+}
+window.addEventListener('load', reportHeight);
+new MutationObserver(reportHeight).observe(document.body, { childList: true, subtree: true, attributes: true });
+</script>
+</body>
+</html>
+`;
+}
+
+// ─── Embed instructions page ────────────────────────────────────────────────
+function renderEmbedPage() {
+  const canonical = `${SITE_URL}/embed/`;
+  const iframeSnippet = `<iframe src="${SITE_URL}/widget/" style="width:100%;border:none;" height="620" id="csd-widget" title="Stamp Duty Calculator"></iframe>
+<script>
+window.addEventListener('message', function (e) {
+  if (e.data && e.data.checkStampDutyWidgetHeight) {
+    document.getElementById('csd-widget').style.height = e.data.checkStampDutyWidgetHeight + 'px';
+  }
+});
+</script>`;
+  return `<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embed the Stamp Duty Calculator on Your Site — Free Widget</title>
+<meta name="description" content="Free embeddable stamp duty calculator widget for mortgage brokers, conveyancers and property blogs. Copy-paste iframe snippet, auto-resizing, no signup.">
+<link rel="canonical" href="${canonical}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png">
+<meta name="google-site-verification" content="m4ovmDFcrhAbFLC1Ix28d793SYzD--JWQ2n8UtetMSg" />
+<style>${CSS}
+  .snippet { background: #12321f; color: #e2e8f0; border-radius: 8px; padding: 18px 20px; font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.7; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="badge">🔌 Free Embed · 2026</div>
+    <h1>Embed This Stamp Duty Calculator On Your Site</h1>
+    <p>Free for mortgage brokers, conveyancers and property blogs. Copy the snippet below — it auto-resizes to fit its content.</p>
+  </div>
+</header>
+<div class="container">
+<div class="content" style="padding-top:40px;">
+  <h2 class="st">Copy-Paste Snippet</h2>
+  <p>Paste this wherever you want the calculator to appear. It's a plain iframe with no tracking beyond what your own site already loads.</p>
+  <div class="snippet">${iframeSnippet.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+  <h2 class="st">Why Embed It</h2>
+  <p>Give visitors an instant SDLT/LBTT/LTT figure without sending them to a third-party site. The widget covers England/NI, Scotland and Wales, first-time-buyer relief, and second-home/buy-to-let surcharges — same calculation engine as the full calculator.</p>
+  <p style="font-size:.82rem;color:var(--muted);">Free to use, no attribution required. If you'd like a co-branded or white-label version, get in touch via the contact details in the site footer.</p>
+  <div class="back-links">
+    <a href="/">← Main stamp duty calculator</a>
+  </div>
+</div>
+</div>
+<footer>
+  <div class="container">
+    <p>Data based on 2026 rates · Updated July 2026</p>
+  </div>
+</footer>
+</body>
+</html>
+`;
+}
+
 // ─── Write satellite pages ──────────────────────────────────────────────────
 for (const sat of SATELLITES) {
   const dir = path.join(ROOT, sat.slug);
@@ -681,9 +1012,11 @@ for (const sat of SATELLITES) {
     h1: sat.h1,
     intro: sat.intro,
     regionDefault: sat.regionDefault,
+    nonResDefault: sat.nonResDefault,
     extraContent: sat.extraContent,
     faqs: sat.faqs,
-    canonicalPath: `/${sat.slug}/`
+    canonicalPath: `/${sat.slug}/`,
+    guideLinks: sat.guideLinks
   });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
   console.log('Wrote', sat.slug + '/index.html');
@@ -695,8 +1028,26 @@ fs.mkdirSync(refundDir, { recursive: true });
 fs.writeFileSync(path.join(refundDir, 'index.html'), renderRefundPage());
 console.log('Wrote refund-calculator/index.html');
 
+// ─── Write limited-company page ────────────────────────────────────────────
+const limitedCompanyDir = path.join(ROOT, 'limited-company');
+fs.mkdirSync(limitedCompanyDir, { recursive: true });
+fs.writeFileSync(path.join(limitedCompanyDir, 'index.html'), renderLimitedCompanyPage());
+console.log('Wrote limited-company/index.html');
+
+// ─── Write widget + embed pages ─────────────────────────────────────────────
+const widgetDir = path.join(ROOT, 'widget');
+fs.mkdirSync(widgetDir, { recursive: true });
+fs.writeFileSync(path.join(widgetDir, 'index.html'), renderWidgetPage());
+console.log('Wrote widget/index.html');
+
+const embedDir = path.join(ROOT, 'embed');
+fs.mkdirSync(embedDir, { recursive: true });
+fs.writeFileSync(path.join(embedDir, 'index.html'), renderEmbedPage());
+console.log('Wrote embed/index.html');
+
 // ─── sitemap.xml ────────────────────────────────────────────────────────────
-const urls = ['/', ...SATELLITES.map(s => `/${s.slug}/`), '/refund-calculator/'];
+// widget/ is excluded (noindex, meant for iframe embedding only, not a landing page).
+const urls = ['/', ...SATELLITES.map(s => `/${s.slug}/`), '/refund-calculator/', '/limited-company/', '/embed/'];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${SITE_URL}${u}</loc></url>`).join('\n')}
